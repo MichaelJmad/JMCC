@@ -1,106 +1,64 @@
-# JMCC Website & Release Portal Setup Guide
+# JMAD Media Control Center (JMCC)
+### The Ultimate Desktop Organizer & Library Manager for Home Media Collections
 
-This folder contains the official showcase website and update server configuration for **JMAD Media Control Center (JMCC)**.
-
-To maintain the application as **closed-source** while distributing release packages and showcasing the app publically, follow this step-by-step infrastructure guide.
-
----
-
-## Part 1: GitHub Repository Architecture
-
-To keep your source code private while sharing the app, use a two-repository setup:
-
-1. **`JMCC-source` (Private Repo):** Holds the actual application source code (everything in `K:\Projects\JMCC` *except* this `website` directory).
-2. **`JMCC` (Public Repo):** Holds *only* the contents of this `website/` directory. This hosts the documentation, landing page, and auto-update configuration via GitHub Pages.
+**JMAD Media Control Center (JMCC)** is a high-performance desktop application designed to streamline media file renaming, staging consolidation, library mapping, and wishlist monitoring across multiple storage drives. It bridges raw file intake with clean, standardized, home theater-ready media libraries.
 
 ---
 
-## Part 2: Setting up the Public Repository
+## 🌟 Key Features
 
-### 1. Create the Repo
-Go to GitHub and create a new repository:
-- **Repository name:** `JMCC` (or your preferred public name)
-- **Visibility:** **Public**
-- **Initialize this repository with:** Do NOT add a README, `.gitignore`, or License (keep it blank).
+### 📂 Intelligent Staging & Media Renamer
+* **Fluff Stripping Parser:** Automatically parses raw, cluttered filenames (e.g. from downloads) to extract clean titles, seasons, and episode numbers.
+* **Extras Folder Mapping:** Easily routes non-credit specials (NCOPs, NCEDs), filler, and bonus files into dedicated extras subdirectories without polluting main media player catalogs.
+* **Manual & Batch Renumbering:** Includes a robust actions editor to renumber multi-file lists, shift episode counts sequentially, or map specific files to alternate seasons.
 
-### 2. Push the Website Directory to GitHub
-Open PowerShell, navigate to this `website/` directory, and run the following commands to initialize and push:
+### 🏛️ Smart Library Management & Multi-Drive Consolidation
+* **Drive-Aware Copy-Verify-Delete:** Moves organized files across drives with transactional safety. It automatically verifies destination file integrity before deleting source files, protecting against transfer data loss.
+* **Free Space Warning:** Enforces a 10 GB safety margin on target drives, automatically suggesting alternative drives or prompting to relocate entire series directories to keep collections consolidated.
+* **Cached Library Browser:** Renders local directories instantly using smart data caching while refreshing directory changes in the background.
 
-```powershell
-# Navigate to the website directory
-cd K:\Projects\JMCC\website
+### ⚖️ Side-by-Side Merge Collision Wizard
+* **Automatic Preflight Collision Detection:** Scans library contents by title and metadata API IDs before moving files, flagging pre-existing items.
+* **Technical Spec Comparison:** Displays colliding episodes side-by-side, exposing differences in **file sizes, video resolutions, video codecs, and audio tracks** to let you easily choose which version to preserve.
 
-# Initialize a new independent git repository
-git init -b main
+### 📋 Tag-Based Wishlist
+* **Flexible Sub-Lists:** Organizes items using filter tags (e.g. Get List, On Hold, Backlog, Needs Fixed).
+* **Automatic Acquisition Sweeper:** A background health scanner checks library additions against metadata API IDs, automatically purging wishlist items once they are successfully acquired.
+* **Needs Fixed Relocation:** Mark files needing adjustment in the library browser to physically move them to a separate workspace folder while flagging them in the wishlist UI with a distinct visual badge.
 
-# Stage all files (html, css, js, mockups, version.json)
-git add .
-
-# Commit files
-git commit -m "Initial commit of JMCC website and update API"
-
-# Link to your new public GitHub repository
-git remote add origin https://github.com/YOUR_GITHUB_USERNAME/JMCC.git
-
-# Force-push to set upstream main branch
-git push -u origin main --force
-```
-
-### 3. Enable GitHub Pages
-1. Go to your repository on GitHub.
-2. Click on **Settings** (gear icon) in the top tabs.
-3. In the left sidebar under "Code and automation", click on **Pages**.
-4. Under "Build and deployment", set the source to **Deploy from a branch**.
-5. Set the branch to **`main`** and folder to **`/ (root)`**.
-6. Click **Save**.
-7. GitHub will deploy the site in 1-2 minutes. Your website URL will be:  
-   `https://YOUR_GITHUB_USERNAME.github.io/JMCC/`
+### 🗺️ Watch Order Timeline Visualizer
+* **Interactive Canvas:** Build chronological timelines of complex series, spinoffs, and movies using a visual drag-and-drop node canvas.
+* **Relational Branch Shifting:** Automatically shifts movie and spinoff cards on the canvas when parent season nodes are collapsed or expanded, keeping layouts organized.
 
 ---
 
-## Part 3: Deploying a Release Package (v2.4.2-rc.1)
+## 💾 Installation & Setup
 
-### 1. Build the Distribution Assets
-Run the local script in the root of your project:
-```powershell
-.\package.ps1
-```
-This compiles the application and generates the output packages inside `dist-app/`:
-- `JMAD Media Control Center 2.4.2-rc.1.exe` (Portable executable)
-- `JMAD Media Control Center-2.4.2-rc.1-win.zip` (Portable ZIP archive)
-- `JMAD Media Control Center Setup 2.4.2-rc.1.exe` (NSIS Installer executable)
+### 1. Download the Release
+Go to the **Releases** tab of the GitHub repository and download the latest version:
+* **Installer (`.exe`):** Recommended for full desktop integration.
+* **Portable (`.exe`):** Run the application directly without installation.
+* **ZIP Archive:** Extract and run the application executable.
 
-### 2. Create a GitHub Release
-1. On your public `JMCC` repository page on GitHub, click on **Releases** (on the right-side panel) -> **Create a new release**.
-2. Set the **Choose a tag** field to `v2.4.2-rc.1` (click "Create new tag on publish").
-3. Set the release title to `v2.4.2-rc.1 Beta`.
-4. Write your release notes (changelog).
-5. Drag and drop the generated files from `dist-app/` into the upload box:
-   - `JMAD Media Control Center-2.4.2-rc.1-win.zip`
-   - `JMAD Media Control Center Setup 2.4.2-rc.1.exe`
-6. Click **Publish release**.
+### 2. Configuration Mappings
+On first launch, open the **Settings** panel (cog icon) to configure:
+1. **Staging Directory:** The folder where raw downloaded folders are staged for organization.
+2. **Library Directories:** Your destination media folders (supports multiple drives).
+3. **Metadata Providers:** Toggle integrations for TMDB (movies/TV), AniList, and MyAnimeList (MAL) for automated title lookups.
 
 ---
 
-## Part 4: Auto-Update Integration
+## 📖 Basic Workflow
 
-The desktop app performs update checking against the version schema stored in the public repo:  
-`https://YOUR_GITHUB_USERNAME.github.io/JMCC/api/update/version.json`
+1. **Intake (Staging):** Place your raw media files in the Staging folder and click **Scan Staging** inside the app.
+2. **Link Metadata:** Link unmapped folders to metadata providers using the search drawer.
+3. **Organize:** Click **Organize** to let the app naturally group and rename files into standardized season directories.
+4. **Merge to Library:** Click **Move to Library**. The app checks for collisions, prompts you to select versions in the **Merge Wizard** if conflicts exist, and safely transfers files to your permanent collection in the background.
 
-### When releasing a new version:
-1. Obtain the final file size (in bytes) and calculate the **SHA-256 hash** of the Setup Installer:
-   ```powershell
-   Get-FileHash -Algorithm SHA256 "dist-app\JMAD Media Control Center Setup 2.4.2-rc.1.exe"
-   ```
-2. Edit `api/update/version.json` in your local website folder:
-   - Update `"version"` to the new tag.
-   - Insert the download link of the new release assets.
-   - Insert the calculated SHA-256 checksum in the `"sha256"` field.
-   - Set the size in bytes under `"sizeBytes"`.
-3. Commit and push the changes:
-   ```powershell
-   git add api/update/version.json
-   git commit -m "Release v2.4.2-rc.1 update metadata"
-   git push origin main
-   ```
-   *Within minutes, all running instances of JMAD Media Control Center will detect the update and prompt the user to download!*
+---
+
+## 💻 System Requirements
+
+* **Operating System:** Windows 10 or Windows 11 (64-bit).
+* **Storage:** Compatible with NTFS, exFAT, and local network shared drives.
+* **Hardware:** Minimal CPU and RAM footprint; performance scales dynamically with multi-core processors during library scans.
