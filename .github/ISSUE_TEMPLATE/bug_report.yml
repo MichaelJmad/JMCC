@@ -1,0 +1,75 @@
+name: '🐛 Bug Report'
+description: File a bug report to help improve JMCC
+title: '[BUG]: '
+labels: ['bug', 'triage']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report an issue with JMCC! Please provide as much detail as possible.
+  - type: input
+    id: version
+    attributes:
+      label: Application Version
+      description: What version of JMCC are you using? (Check the bottom status bar, e.g. v2.5.0-RC1)
+      placeholder: v2.5.0
+    validations:
+      required: true
+  - type: dropdown
+    id: package_type
+    attributes:
+      label: Distribution Type
+      options:
+        - Installer (.exe)
+        - Portable (.exe)
+        - Zip Archive
+    validations:
+      required: true
+  - type: dropdown
+    id: module
+    attributes:
+      label: Affected Subsystem / Module
+      options:
+        - Staging & Organize Studio
+        - Library Browser & Playback
+        - Multi-Drive Move & Collision Wizard
+        - Wishlist & Auto-Acquisition
+        - Provider ID Enrichment Studio
+        - Settings & Database Migration
+        - Live Diagnostics Console
+        - Auto-Updater
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of what the bug is.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: Step-by-step instructions to reproduce the issue.
+      placeholder: |
+        1. Go to '...'
+        2. Click on '....'
+        3. Scroll down to '....'
+        4. See error
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What did you expect to happen?
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Diagnostics Console Logs / Stack Trace
+      description: Copy and paste logs from the 💻 Console or Settings ➔ Diagnostics tab.
+      render: shell
